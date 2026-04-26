@@ -18,3 +18,15 @@ function listarNumerosImpares(){
         console.log(i)
     }
 }
+function ejecutar(numEjercicio){
+    switch(numEjercicio){
+        case 1: listarNumeros();
+            break;
+        case 2: listarNumerosReversa();
+            break;    
+        case 3: listarNumerosPares();
+            break; 
+        case 4: listarNumerosImpares(); 
+            break;    
+    }
+}
