@@ -1,0 +1,257 @@
+body::before,
+body::after {
+    pointer-events: none; /* 🔥 clave: deja hacer clic */
+    z-index: 0;
+}
+header, main, footer {
+    position: relative;
+    z-index: 1;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    color: #00ffcc;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+
+    /* FONDO ARCADE */
+    background: linear-gradient(to top, #000000, #050010);
+    position: relative;
+}
+/* GRID ARCADE */
+body::before {
+    content: "";
+    position: fixed;
+    width: 200%;
+    height: 200%;
+    top: 0;
+    left: -50%;
+    
+    background-image: 
+        linear-gradient(#00ffff33 1px, transparent 1px),
+        linear-gradient(90deg, #00ffff33 1px, transparent 1px);
+
+    background-size: 40px 40px;
+    transform: perspective(500px) rotateX(60deg);
+    animation: moverGrid 10s linear infinite;
+}
+
+/* EFECTO NEÓN SUPERIOR */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 300px;
+
+    background: radial-gradient(circle, #ff00ff55, transparent);
+    filter: blur(60px);
+}
+
+/* ANIMACIÓN */
+@keyframes moverGrid {
+    from {
+        transform: perspective(500px) rotateX(60deg) translateY(0);
+    }
+    to {
+        transform: perspective(500px) rotateX(60deg) translateY(40px);
+    }
+}
+main {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #00ffff44;
+}
+/* EFECTO NEÓN */
+.titulo {
+    text-align: center;
+    margin: 20px 0;
+    color: #ff00ff;
+    text-shadow: 
+        0 0 5px #ff00ff,
+        0 0 10px #ff00ff,
+        0 0 20px #00ffff;
+}
+
+/* BOTÓN */
+header {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.btn-probar {
+    font-family: inherit;
+    padding: 15px 25px;
+    border: 2px solid #00ffff;
+    background: black;
+    color: #00ffff;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 0 10px #00ffff;
+}
+
+.btn-probar:hover {
+    background: #00ffff;
+    color: black;
+    box-shadow: 0 0 20px #00ffff;
+}
+
+/* INPUT */
+.input-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.input-container label {
+    display: block;
+    margin-bottom: 10px;
+    color: #ffff00;
+}
+
+.input-container input {
+    font-family: inherit;
+    padding: 10px;
+    border: 2px solid #ff00ff;
+    background: black;
+    color: #00ffcc;
+    outline: none;
+    box-shadow: 0 0 10px #ff00ff;
+}
+
+/* TABLA */
+table {
+    border-collapse: collapse;
+    background: black;
+    box-shadow: 0 0 20px #00ffff;
+    width: 100%;
+    max-width: 500px;
+
+    /* 🔥 borde completo */
+    border: 2px solid #00ffff;
+}
+
+/* ENCABEZADO */
+th {
+    color: #ffff00;
+    padding: 15px;
+
+    border: 1px solid #00ffff;
+}
+
+/* CELDAS */
+td {
+    padding: 12px;
+    text-align: center;
+
+    border: 1px solid #00ffff;
+}
+
+/* EFECTO HOVER */
+tr:hover {
+    background: #111;
+    color: #ff00ff;
+}
+
+/* EFECTO HOVER TIPO JUEGO */
+tr:hover {
+    background: #111;
+    color: #ff00ff;
+}
+
+/* FOOTER */
+footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 20px;
+    color: #00ffff;
+    border-top: 2px solid #00ffff;
+    box-shadow: 0 -5px 10px #00ffff;
+}
+
+/* CONTENEDOR GENERAL */
+main {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+}
+
+/* TABLA RESPONSIVA REAL */
+.tabla-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    border-collapse: collapse;
+    background: black;
+    box-shadow: 0 0 20px #00ffff;
+
+    width: 100%;
+    max-width: 500px;
+
+    border: 2px solid #00ffff;
+
+    margin: auto; /* 🔥 clave para centrar */
+}
+
+/* INPUT RESPONSIVO */
+.input-container input {
+    width: 100%;
+    max-width: 250px;
+}
+
+/* 📱 CELULARES */
+@media (max-width: 600px) {
+    body {
+        font-size: 10px;
+    }
+
+    .titulo {
+        font-size: 14px;
+    }
+
+    .btn-probar {
+        width: 100%;
+        font-size: 12px;
+    }
+
+    input {
+        font-size: 12px;
+    }
+
+    table {
+        font-size: 10px;
+    }
+}
+
+/* 📱 TABLETS */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .titulo {
+        font-size: 18px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+}
+
+/* 💻 COMPUTADOR */
+@media (min-width: 1025px) {
+    .titulo {
+        font-size: 22px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+}
