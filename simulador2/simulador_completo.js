@@ -70,7 +70,7 @@ function pintarCliente() {
       "<td>" + elemento.egresos + "</td>" +
       "<td>" +
       `<button onclick="selecionarCliente(` + elemento.cedula + `)">Actualizar</button>` +
-      "<button>Eliminar</button>" +
+      "<button onclick='eliminarCliente(\"" + elemento.cedula + "\")'>Eliminar</button>" +
       "</td>" +
       "</tr>"
   }
@@ -101,6 +101,20 @@ function selecionarCliente(cedula) {
     mostrarTextoEnCaja("txtIngresos", encontrado.ingresos)
     mostrarTextoEnCaja("txtEgresos", encontrado.egresos)
   }
+}
+function eliminarCliente(cedula){
+
+  for(i = 0; i < clientes.length; i++){
+
+    if(clientes[i].cedula == cedula){
+
+      clientes.splice(i,1);
+
+      break;
+    }
+  }
+
+  pintarCliente();
 }
 function limpiar() {
   mostrarTextoEnCaja("txtNombre", "")
@@ -220,6 +234,20 @@ function buscarCreditoCliente(cedula){
 
   return creditosCliente;
 }
+function eliminarCredito(cedula, monto){
+
+  for(i = 0; i < creditos.length; i++){
+
+    if(creditos[i].cedula == cedula && creditos[i].monto == monto){
+
+      creditos.splice(i,1);
+
+      break;
+    }
+  }
+
+  pintarCreditos(creditos);
+}
 function pintarCreditos(creditos){
   let tabla=document.getElementById("tablaCreditos")
   let contenido=""
@@ -233,7 +261,7 @@ function pintarCreditos(creditos){
           "<td>"+elemento.tasa+"</td>"+
           "<td>"+elemento.plazo+"</td>"+
           "<td>"+elemento.cuota.toFixed(2)+"</td>"+
-          "<td><button>Eliminar</button></td>"+
+          "<td><button onclick='eliminarCredito(\"" + elemento.cedula + "\"," + elemento.monto + ")'>Eliminar</button></td>"
         "</tr>"
   }
   tabla.innerHTML=contenido
