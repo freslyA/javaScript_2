@@ -13,6 +13,7 @@ function ocultarSecciones() {
   document.getElementById("parametros").classList.remove("activa");
   document.getElementById("clientes").classList.remove("activa");
   document.getElementById("credito").classList.remove("activa");
+  document.getElementById("listaCreditos").classList.remove("activa");
 }
 function mostrarSeccion(id) {
   ocultarSecciones()
@@ -82,6 +83,7 @@ function buscarCliente(cedula) {
     elemento = clientes[i]
     if (elemento.cedula == cedula) {
       encontrado = elemento
+      clienteSeleccionado=elemento
       break;
     }
   }
@@ -161,6 +163,7 @@ function calcularCredito(){
   capacidadPagoRedondeado=mostrarRedondeado(capacidadPago)
   monto=recuperarInt("montoCredito")
   plazo=recuperarInt("plazoCredito")
+  plazoMeses=plazo*12
   interes=calcularInteresSimple(monto,plazo)
   totalPagar=calcularTotalPagar(monto,interes)
   totalPagarRedondeado=mostrarRedondeado(totalPagar)
@@ -177,10 +180,74 @@ function calcularCredito(){
     tabla.className="aprobado"
     tabla.innerHTML+=  "<p><strong>Resultado: </strong>APROBADO</p>"
   }else{
-    document.getElementById("btnSolicitarCredito").disabled=true
+     document.getElementById("btnSolicitarCredito").disabled=true
     tabla.innerHTML+=  "<p><strong>Resultado: </strong>NO APROBADO</p>"
     tabla.className="rechazado"
   }
 // de aqui para de la lante usaremos la rama dev
+}
+function asignarCredito(){
+  monto=recuperarInt("montoCredito")
+  plazo=recuperarInt("plazoCredito")
+  encontrado=buscarCliente(cedula)
+  disponible=calcularDisponible(encontrado.ingresos,encontrado.egresos)
+  capacidadPago=calcularCapacidadPago(disponible)
+  cuotaMensual=calcularCuotaMensual(monto,plazo)
+  credito=aprobarCredito(capacidadPago,cuotaMensual)
+  if(credito==true){
+    let credito={
+    cedula:clienteSeleccionado.cedula,
+    nombre:clienteSeleccionado.nombre,
+    apellido:clienteSeleccionado.apellido,
+    monto:monto,
+    tasa:tasaInteres,
+    plazo:plazoMeses,
+    cuota:cuotaMensual
+  }
+  creditos.push(credito)
+  }
+}
+function buscarCreditoCliente(cedula){
+  let creditosCliente = [];
+
+  for(i = 0; i < creditos.length; i++){
+    elemento = creditos[i];
+
+    if(elemento.cedula == cedula){
+      creditosCliente.push(elemento);
+    }
+  }
+
+  return creditosCliente;
+}
+function pintarCreditos(creditos){
+  let tabla=document.getElementById("tablaCreditos")
+  let contenido=""
+  for(i=0;i<creditos.length;i++){
+    elemento=creditos[i]
+    contenido+= "<tr>"+
+          "<td>"+elemento.cedula+"</td>"+
+          "<td>"+elemento.nombre+"</td>"+
+          "<td>"+elemento.apellido+"</td>"+
+          "<td>"+elemento.monto+"</td>"+
+          "<td>"+elemento.tasa+"</td>"+
+          "<td>"+elemento.plazo+"</td>"+
+          "<td>"+elemento.cuota.toFixed(2)+"</td>"+
+          "<td><button>Eliminar</button></td>"+
+        "</tr>"
+  }
+  tabla.innerHTML=contenido
+}
+function buscarClienteCreditos(){
+  cedula = recuperaraTexto("buscarCedulaListado");
+
+  let creditosCliente = buscarCreditoCliente(cedula);
+
+  if(creditosCliente.length > 0){
+    pintarCreditos(creditosCliente);
+  }else{
+    alert("El cliente no tiene créditos registrados");
+    document.getElementById("tablaCreditos").innerHTML = "";
+  }
 }
 //Para recuperar o mostrar información usar los métodos de la clase utilitarios, puede agregar métodos adicionales en utilitarios
