@@ -21,7 +21,8 @@ function mostrarSeccion(id) {
 function guardarTasa() {
   tasa = recuperarInt("tasaInteres")
   if (tasa >= 10 && tasa <= 20) {
-    alert("tasa configurada correctamente: 15%")
+    tasaInteres=tasa
+    alert("tasa configurada correctamente: "+tasa+"%")
   } else {
     alert("la tasa debe estar entre 10% y 20%")
   }
@@ -125,7 +126,7 @@ function buscarClienteCredito() {
 
 }
 function calcularTotalPagar(monto,interes){
-    return monto+interes+100
+    return monto+interes
 }
 function calcularCuotaMensual(total,años){
     meses=años*12
@@ -172,12 +173,14 @@ function calcularCredito(){
   "<p><strong>Total a Pagar: </strong>"+totalPagarRedondeado+"</p>"+
   "<p><strong>Cuota Mensual: </strong>"+cuotaMensualRedondeado+"</p>"
   if(credito==true){
+    document.getElementById("btnSolicitarCredito").disabled=false
     tabla.className="aprobado"
     tabla.innerHTML+=  "<p><strong>Resultado: </strong>APROBADO</p>"
   }else{
+    document.getElementById("btnSolicitarCredito").disabled=true
     tabla.innerHTML+=  "<p><strong>Resultado: </strong>NO APROBADO</p>"
     tabla.className="rechazado"
   }
-
+// de aqui para de la lante usaremos la rama dev
 }
 //Para recuperar o mostrar información usar los métodos de la clase utilitarios, puede agregar métodos adicionales en utilitarios
