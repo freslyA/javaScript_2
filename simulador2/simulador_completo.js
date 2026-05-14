@@ -12,6 +12,7 @@ let creditoAprobado = false;
 function ocultarSecciones() {
   document.getElementById("parametros").classList.remove("activa");
   document.getElementById("clientes").classList.remove("activa");
+  document.getElementById("credito").classList.remove("activa");
 }
 function mostrarSeccion(id) {
   ocultarSecciones()
@@ -66,7 +67,7 @@ function pintarCliente() {
       "<td>" + elemento.ingresos + "</td>" +
       "<td>" + elemento.egresos + "</td>" +
       "<td>" +
-      `<button onclick="selecionarCliente(`+elemento.cedula+`)">Actualizar</button>`+
+      `<button onclick="selecionarCliente(` + elemento.cedula + `)">Actualizar</button>` +
       "<button>Eliminar</button>" +
       "</td>" +
       "</tr>"
@@ -90,7 +91,7 @@ function selecionarCliente(cedula) {
   if (encontrado == null) {
     alert("el cliente no existe")
   } else {
-    clienteSeleccionado=encontrado
+    clienteSeleccionado = encontrado
     mostrarTextoEnCaja("txtNombre", encontrado.nombre)
     mostrarTextoEnCaja("txtCedula", encontrado.cedula)
     mostrarTextoEnCaja("txtApellido", encontrado.apellido)
@@ -99,10 +100,84 @@ function selecionarCliente(cedula) {
   }
 }
 function limpiar() {
-  mostrarTextoEnCaja("txtNombre","")
-  mostrarTextoEnCaja("txtCedula","" )
-  mostrarTextoEnCaja("txtApellido","" )
+  mostrarTextoEnCaja("txtNombre", "")
+  mostrarTextoEnCaja("txtCedula", "")
+  mostrarTextoEnCaja("txtApellido", "")
   mostrarTextoEnCaja("txtIngresos", "")
-  mostrarTextoEnCaja("txtEgresos","" )
+  mostrarTextoEnCaja("txtEgresos", "")
+}
+function buscarClienteCredito() {
+  tabla = document.getElementById("datosClienteCredito")
+  contenido = ""
+  cedula = recuperaraTexto("buscarCedulaCredito")
+  encontrado = buscarCliente(cedula)
+  if (encontrado != null) {
+    contenido +="<h3>Datos del Cliente</h3>"+
+    "<p><strong>Cédula: </strong>"+encontrado.cedula+"</p>"+
+    "<p><strong>Nombre: </strong>"+encontrado.nombre+"</p>"+
+    "<p><strong>Apellido: </strong>"+encontrado.apellido+"</p>"+
+    "<p><strong>Ingresos: </strong>"+encontrado.ingresos+"</p>"+
+    "<p><strong>Egresos: </strong>"+encontrado.egresos+"</p>"
+    tabla.innerHTML=contenido
+  } else {
+    alert("el cliente no fue encontrado")
+  }
+
+}
+function calcularTotalPagar(monto,interes){
+    return monto+interes+100
+}
+function calcularCuotaMensual(total,años){
+    meses=años*12
+    return total/meses
+}
+function calcularCapacidadPago(montoDisponible){
+    return montoDisponible/2
+}
+function aprobarCredito(capacidad,cuota){
+    if(capacidad>cuota){
+        return true
+    }else{
+        return false
+    }
+}
+function calcularDisponible(ingresos,egresos){
+    let disponible=ingresos-egresos
+    if(disponible<0){
+        return 0
+    }else {
+        return disponible
+    }
+}
+function calcularInteresSimple(monto,años){
+    return (años*monto)*(tasaInteres/100)
+}
+function calcularCredito(){
+  cedula=recuperaraTexto("buscarCedulaCredito")
+  encontrado=buscarCliente(cedula)
+  disponible=calcularDisponible(encontrado.ingresos,encontrado.egresos)
+  capacidadPago=calcularCapacidadPago(disponible)
+  capacidadPagoRedondeado=mostrarRedondeado(capacidadPago)
+  monto=recuperarInt("montoCredito")
+  plazo=recuperarInt("plazoCredito")
+  interes=calcularInteresSimple(monto,plazo)
+  totalPagar=calcularTotalPagar(monto,interes)
+  totalPagarRedondeado=mostrarRedondeado(totalPagar)
+  cuotaMensual=calcularCuotaMensual(monto,plazo)
+  cuotaMensualRedondeado=mostrarRedondeado(cuotaMensual)
+  credito=aprobarCredito(capacidadPago,cuotaMensual)
+  let tabla=document.getElementById("resultadoCredito")
+  tabla.innerHTML= "<h3>Datos del Credito</h3>"+
+  "<p><strong>Capacidad de Pago: </strong>"+capacidadPagoRedondeado+"</p>"+
+  "<p><strong>Total a Pagar: </strong>"+totalPagarRedondeado+"</p>"+
+  "<p><strong>Cuota Mensual: </strong>"+cuotaMensualRedondeado+"</p>"
+  if(credito==true){
+    tabla.className="aprobado"
+    tabla.innerHTML+=  "<p><strong>Resultado: </strong>APROBADO</p>"
+  }else{
+    tabla.innerHTML+=  "<p><strong>Resultado: </strong>NO APROBADO</p>"
+    tabla.className="rechazado"
+  }
+
 }
 //Para recuperar o mostrar información usar los métodos de la clase utilitarios, puede agregar métodos adicionales en utilitarios

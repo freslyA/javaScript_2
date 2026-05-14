@@ -33,3 +33,7 @@ function recuperaraTexto(idComponente){
         componente.src = rutaImagen;
     
     }
+    function mostrarRedondeado(numero){
+    numeroRedondeado=numero.toFixed(2)
+    return numeroRedondeado
+}
