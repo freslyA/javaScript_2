@@ -66,7 +66,7 @@ function pintarCliente() {
       "<td>" + elemento.ingresos + "</td>" +
       "<td>" + elemento.egresos + "</td>" +
       "<td>" +
-      "<button>Actualizar</button>" +
+      `<button onclick="selecionarCliente(`+elemento.cedula+`)">Actualizar</button>`+
       "<button>Eliminar</button>" +
       "</td>" +
       "</tr>"
@@ -85,26 +85,17 @@ function buscarCliente(cedula) {
   }
   return encontrado
 }
-function selecionarCliente() {
-  cedula = recuperaraTexto("cedula")
+function selecionarCliente(cedula) {
   encontrado = buscarCliente(cedula)
   if (encontrado == null) {
     alert("el cliente no existe")
   } else {
-
+    clienteSeleccionado=encontrado
     mostrarTextoEnCaja("txtNombre", encontrado.nombre)
     mostrarTextoEnCaja("txtCedula", encontrado.cedula)
     mostrarTextoEnCaja("txtApellido", encontrado.apellido)
     mostrarTextoEnCaja("txtIngresos", encontrado.ingresos)
     mostrarTextoEnCaja("txtEgresos", encontrado.egresos)
-  }
-}
-function modificarCliente(cliente) {
-  clienteEncontrado = buscarCliente(cliente.cedula)
-  if (clienteEncontrado != null) {
-    clienteEncontrado.nombre = cliente.nombre
-    clienteEncontrado.apellido = cliente.apellido
-    clienteEncontrado
   }
 }
 function limpiar() {
